@@ -9,6 +9,7 @@ const cart = [];
 
 function renderMenu() {
     const menuList = document.getElementById('menu-items');
+    menuList.innerHTML = '';
     menuItems.forEach((item, index) => {
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -25,11 +26,11 @@ function renderCart() {
     cartList.innerHTML = '';
     let total = 0;
     cart.forEach((item, i) => {
-        total += item.price;
+        total += item.price * item.quantity;
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
         li.innerHTML = `
-            <span>${item.name} - £${item.price.toFixed(2)}</span>
+            <span>${item.name} x ${item.quantity} - £${(item.price * item.quantity).toFixed(2)}</span>
             <button class="btn btn-sm btn-danger" onclick="removeFromCart(${i})">Remove</button>
         `;
         cartList.appendChild(li);
@@ -38,12 +39,23 @@ function renderCart() {
 }
 
 function addToCart(index) {
-    cart.push(menuItems[index]);
+    const selected = menuItems[index];
+    const existing = cart.find(item => item.name === selected.name);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ ...selected, quantity: 1 });
+    }
     renderCart();
 }
 
 function removeFromCart(index) {
-    cart.splice(index, 1);
+    const item = cart[index];
+    if (item.quantity > 1) {
+        item.quantity -= 1;
+    } else {
+        cart.splice(index, 1);
+    }
     renderCart();
 }
 
@@ -57,4 +69,6 @@ document.getElementById('checkout-button').addEventListener('click', () => {
     renderCart();
 });
 
-document.addEventListener('DOMContentLoaded', renderMenu);
+document.addEventListener('DOMContentLoaded', () => {
+    renderMenu();
+});
