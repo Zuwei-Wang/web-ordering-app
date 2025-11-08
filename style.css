@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
+}
+
+#menu, #cart {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+#menu-items li, #cart-items li {
+    list-style: none;
+    margin-bottom: 5px;
+}
+
+button {
+    margin-top: 10px;
+}
